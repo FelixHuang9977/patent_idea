@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network RACK RCA System</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ 
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#f1f5f9',
+      primaryBorderColor: '#38bdf8',
+      lineColor: '#38bdf8',
+      secondaryColor: '#334155',
+      tertiaryColor: '#0f172a',
+      background: '#020617',
+      mainBkg: '#1e293b',
+      secondBkg: '#334155',
+      textColor: '#f1f5f9',
+      nodeBorder: '#38bdf8'
+    }
+  });
+</script>
+<style>
+/* Theme Variables */
+:root {
+  --font-family-display: Arial, sans-serif;
+  --font-weight-display: 600;
+  --font-family-content: Arial, sans-serif;
+  --font-weight-content: 400;
+  --font-size-content: 16px;
+  --line-height-content: 1.4;
+}
+
+/* DARK THEME (DEFAULT) */
+body.theme-dark {
+  --color-bg-base: #0f172a;
+  --color-bg-elevated: #020617;
+  --color-bg-surface: #1e293b;
+  --color-bg-muted: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-accent: #38bdf8;
+  --color-primary: #38bdf8;
+  --color-primary-foreground: #0f172a;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-content);
+  font-size: var(--font-size-content);
+  line-height: var(--line-height-content);
+  overflow-x: hidden;
+}
+
+/* Slide Container */
+.slide {
+  width: 960px;
+  height: 540px;
+  margin: 0 auto 20px;
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Layout Utilities */
+.row { flex-direction: row; }
+.col { flex-direction: column; }
+.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.space-between { justify-content: space-between; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.fill-width { flex: 1; }
+.fill-height { flex: 1; display: flex; flex-direction: column; }
+
+/* Spacing */
+.gap-sm { gap: 0.5rem; }
+.gap-md { gap: 1rem; }
+.gap-lg { gap: 1.5rem; }
+.gap-xl { gap: 2rem; }
+.gap-2xl { gap: 3rem; }
+
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.p-12 { padding: 3rem; }
+.p-16 { padding: 4rem; }
+
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+.mt-12 { margin-top: 3rem; }
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-display);
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+.text-6xl { font-size: 3.75rem; }
+.text-5xl { font-size: 3rem; }
+.text-4xl { font-size: 2.25rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-xl { font-size: 1.25rem; }
+.text-lg { font-size: 1.125rem; }
+.text-base { font-size: 1rem; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+.font-normal { font-weight: 400; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.opacity-90 { opacity: 0.9; }
+.opacity-80 { opacity: 0.8; }
+.opacity-70 { opacity: 0.7; }
+.opacity-60 { opacity: 0.6; }
+
+/* Lists */
+ul, ol {
+  margin-left: 2rem;
+  line-height: 1.8;
+}
+
+ul li { list-style: disc; }
+ol li { list-style: decimal; }
+
+li { margin-bottom: 0.75rem; }
+li:last-child { margin-bottom: 0; }
+
+/* Card Styles */
+.card-rect {
+  padding: 2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+</style>
+</head>
+<body class="theme-dark">
+
+  <!-- Slide 1: Title -->
+  <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+    <h1 class="text-6xl mb-4" style="color: #38bdf8;">Network RACK RCA System</h1>
+    <p class="text-2xl mb-6" style="color: #cbd5e1;">LLM推論 + 專家回饋閉環</p>
+    <p class="text-sm mt-8" style="color: #94a3b8;">2026專利佈局提案</p>
+  </section>
+
+  <!-- Slide 2: 背景與挑戰 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">現有技術的挑戰</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>傳統RCA依賴規則引擎，難以應對複雜拓樸</li>
+      <li>LLM分析缺乏domain knowledge與準確率驗證</li>
+      <li>專家知識未能有效回饋至系統</li>
+      <li>無法持續學習與適應新故障模式</li>
+    </ul>
+  </section>
+
+  <!-- Slide 3: 發明概述 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">核心發明</h2>
+    <p class="text-lg mb-6" style="color: #cbd5e1;">整合LLM自動推論與人類專家回饋的閉環RCA平台</p>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>LLM對Network RACK log進行根因推論</li>
+      <li>專家介面接收修正與標註</li>
+      <li>知識圖譜持續更新</li>
+    </ul>
+  </section>
+
+  <!-- Slide 4: 系統架構圖 (Mermaid) -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">系統架構圖</h2>
+    <div class="mermaid" style="background-color: #020617; padding: 1rem; border-radius: 8px;">
+flowchart TD
+    A[RACK Log Collector] --> B[LLM RCA Engine]
+    B --> C[Expert Feedback Interface]
+    C --> D[Knowledge Update Module]
+    D --> E[(知識圖譜)]
+    E -.閉環回饋.-> B
+    
+    style A fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style B fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style C fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style D fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style E fill:#334155,stroke:#38bdf8,color:#f1f5f9
+    </div>
+  </section>
+
+  <!-- Slide 5: 資料來源 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">RACK Log 資料來源</h2>
+    <div class="row gap-lg">
+      <div class="fill-width" style="background-color: #1e293b; padding: 2rem;">
+        <h3 class="mb-4" style="color: #38bdf8;">硬體層</h3>
+        <p style="color: #cbd5e1;">BMC telemetry、CPO port counter、UEC link training</p>
+      </div>
+      <div class="fill-width" style="background-color: #1e293b; padding: 2rem;">
+        <h3 class="mb-4" style="color: #38bdf8;">網路層</h3>
+        <p style="color: #cbd5e1;">Routing event、ECMP hash、告警記錄</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6: LLM RCA 流程圖 (Mermaid) -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">LLM RCA 引擎流程圖</h2>
+    <div class="mermaid" style="background-color: #020617; padding: 1rem; border-radius: 8px;">
+flowchart LR
+    A[Raw Logs + Topology] --> B[Log摘要<br/>故障敘事生成]
+    B --> C[Chain-of-Thought<br/>根因推論]
+    C --> D[知識圖譜檢索<br/>相似案例]
+    D --> E[信心度排序<br/>Top-N根因]
+    E --> F[輸出<br/>根因列表+修復建議]
+    
+    style A fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style B fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style C fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style D fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style E fill:#1e293b,stroke:#38bdf8,color:#f1f5f9
+    style F fill:#334155,stroke:#38bdf8,color:#f1f5f9
+    </div>
+  </section>
+
+  <!-- Slide 7: 實施例 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">實施例：CPO Link Flap</h2>
+    <p class="text-lg mb-4" style="color: #cbd5e1;">Log: CPO port5 BER spike → UEC credit stall → GPU3 timeout</p>
+    <ul class="text-base" style="color: #cbd5e1;">
+      <li>LLM輸出1：光纖connector鬆脫 (0.72)</li>
+      <li>LLM輸出2：CPO Tx laser aging (0.18)</li>
+      <li>專家修正：選擇#1，標註「batch 2026-02易發生」</li>
+    </ul>
+  </section>
+
+  <!-- Slide 8: 專家回饋介面 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">專家回饋介面功能</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>呈現LLM結果＋原始log＋拓樸圖</li>
+      <li>選擇正確根因或新增候選</li>
+      <li>修正故障摘要與解釋</li>
+      <li>標註修復步驟與拓樸context</li>
+    </ul>
+  </section>
+
+  <!-- Slide 9: 知識圖譜更新 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">知識更新模組</h2>
+    <p class="text-lg mb-4" style="color: #cbd5e1;">將專家回饋轉為結構化triples</p>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>格式：(log_pattern, root_cause, fix_action, context)</li>
+      <li>更新知識圖譜（新增節點/邊）</li>
+      <li>產生fine-tune資料集提升LLM準確率</li>
+    </ul>
+  </section>
+
+  <!-- Slide 10: 閉環推論 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">閉環推論機制</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>未來事件優先檢索專家標註案例</li>
+      <li>計算log pattern語意相似度</li>
+      <li>LLM結合檢索結果re-reasoning</li>
+      <li>持續累積domain knowledge</li>
+    </ul>
+  </section>
+
+  <!-- Slide 11: 請求項結構 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">專利請求項（獨立項）</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>系統：五大模組架構</li>
+      <li>方法：收集→LLM推論→專家標註→更新→閉環</li>
+      <li>產品：非暫態媒體儲存程式碼</li>
+    </ul>
+  </section>
+
+  <!-- Slide 12: 從屬項涵蓋範圍 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">從屬項保護範圍</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>LLM prompt設計（chain-of-thought）</li>
+      <li>知識圖譜schema（四元組結構）</li>
+      <li>專家介面互動（拓樸標註）</li>
+      <li>特定協定log（CPO/UEC/SUE）</li>
+    </ul>
+  </section>
+
+  <!-- Slide 13: 技術優勢 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">核心技術優勢</h2>
+    <div class="row gap-lg">
+      <div class="fill-width" style="background-color: #1e293b; padding: 2rem;">
+        <h3 class="mb-4" style="color: #38bdf8;">自動化</h3>
+        <p style="color: #cbd5e1;">LLM快速生成假設，減少MTTR</p>
+      </div>
+      <div class="fill-width" style="background-color: #1e293b; padding: 2rem;">
+        <h3 class="mb-4" style="color: #38bdf8;">持續學習</h3>
+        <p style="color: #cbd5e1;">專家知識回饋，準確率持續提升</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 14: 應用場景 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">應用場景</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>資料中心Network RACK故障診斷</li>
+      <li>製造測試階段RCA與良率提升</li>
+      <li>NOC團隊輔助決策系統</li>
+      <li>供應鏈品質追蹤（批次變異）</li>
+    </ul>
+  </section>
+
+  <!-- Slide 15: 佈局策略 -->
+  <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+    <h2 class="mb-6" style="color: #38bdf8;">專利佈局策略</h2>
+    <ul class="text-lg" style="color: #cbd5e1;">
+      <li>TW/US/CN先申請provisional</li>
+      <li>強調Network RACK domain差異化</li>
+      <li>準備POC驗證準確率提升數據</li>
+      <li>獨立項+從屬項廣窄搭配</li>
+    </ul>
+  </section>
+
+  <!-- Slide 16: Thank You -->
+  <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+    <h2 class="text-5xl mb-6" style="color: #38bdf8;">謝謝!</h2>
+    <p class="text-xl" style="color: #cbd5e1;">Questions?</p>
+    <p class="text-sm mt-8" style="color: #94a3b8;">patent@example.com</p>
+  </section>
+
+</body>
+</html>
